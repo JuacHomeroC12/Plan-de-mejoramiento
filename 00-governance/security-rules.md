@@ -1,8 +1,8 @@
-# Technical Security Rules
+# Technical Security Rules - FIXGO
 
 > Mandatory technical controls that apply to all project code.
 > These rules complement the security policy (`security-policy.md`) with
-> concrete implementation practices.
+> concrete implementation practices for the FIXGO platform.
 
 ---
 
@@ -10,136 +10,135 @@
 
 ### A01 — Broken Access Control
 
-```typescript
+```java
 // ❌ BAD — trusting frontend data
-const userId = req.body.userId;
+String userId = request.getParameter("userId");
 
-// ✅ GOOD — extract from verified JWT token
-const userId = req.user.sub; // req.user comes from the authentication middleware
+// ✅ GOOD — extract from verified Firebase JWT token in the security context
+String userId = securityContext.getAuthentication().getName(); 
 ```
 
 **Rules:**
-- Every protected endpoint MUST have the authentication middleware applied
-- Permissions are verified in the Use Case, not in the Controller
-- A resource is only returned if the user has `[resource]:read` permission
-- Write actions require `[resource]:write` or `[resource]:delete` permission
+- Every protected endpoint MUST have the authentication middleware/filter applied.
+- Permissions are verified in the Use Case / Service layer, not in the Controller.
+- A resource is only returned if the user has `read` permission for it.
+- Write actions require explicit `write` or `delete` permissions.
 
 ### A02 — Cryptographic Failures
 
 **Rules:**
-- Passwords: use **bcrypt** with cost factor ≥ 12. Never MD5 or SHA-1 for passwords
-- JWTs: sign with RS256 (asymmetric). Never HS256 in production with a weak secret
-- Sensitive data in transit: HTTPS mandatory in all environments except local
-- Sensitive data at rest: encrypt with AES-256-GCM the fields marked as PII
-- Never log passwords, tokens, or credit card data
+- **Passwords:** FIXGO delegates user password management to Firebase Auth. If any internal system password must be stored, use **bcrypt** with cost factor ≥ 12. Never MD5 or SHA-1.
+- **Sensitive data in transit:** HTTPS mandatory in all environments except local.
+- **Sensitive data at rest:** Encrypt with AES-256-GCM any fields marked as PII in MySQL.
+- Never log passwords, tokens, or credit card data.
 
 ### A03 — Injection
 
 **SQL:**
-```typescript
+```java
 // ❌ BAD — direct concatenation
-const user = await db.query(`SELECT * FROM users WHERE id = ${userId}`);
+String query = "SELECT * FROM vehicles WHERE license_plate = '" + userInput + "'";
 
-// ✅ GOOD — parameterized query
-const user = await db.query('SELECT * FROM users WHERE id = $1', [userId]);
+// ✅ GOOD — parameterized query (JDBC)
+String query = "SELECT * FROM vehicles WHERE license_plate = ?";
+PreparedStatement pstmt = connection.prepareStatement(query);
+pstmt.setString(1, userInput);
 
-// ✅ GOOD — ORM with typed parameters
-const user = await userRepository.findOne({ where: { id: userId } });
+// ✅ GOOD — ORM (Hibernate/JPA)
+Vehicle vehicle = vehicleRepository.findByLicensePlate(userInput);
 ```
 
 **Rules:**
-- Parameterized queries ALWAYS. Zero concatenated strings in SQL
-- Validate and sanitize all inputs with a validation library (Zod, Joi, class-validator)
-- In GraphQL: limit query depth with `graphql-depth-limit`
+- Parameterized queries ALWAYS. Zero concatenated strings in SQL.
+- Validate and sanitize all inputs with a validation library (e.g., `jakarta.validation`).
 
 ### A04 — Insecure Design
 
-- Every HU that exposes user data must undergo privacy review
-- Bulk query endpoints have mandatory pagination (maximum [100] records per page)
-- Do not expose sequential internal IDs; use UUIDs
+- Every User Story that exposes client or workshop data must undergo a privacy review.
+- Bulk query endpoints have mandatory pagination (maximum 100 records per page).
+- Do not expose sequential internal IDs in the API; use UUIDs.
 
 ### A05 — Security Misconfiguration
 
-```
+```text
 # Verification checklist per environment
-□ Stack traces NOT visible in production
-□ Security headers configured (Helmet.js or equivalent):
+□ Stack traces NOT visible in production.
+□ Security headers configured:
   - X-Content-Type-Options: nosniff
   - X-Frame-Options: DENY
-  - Content-Security-Policy defined
   - Strict-Transport-Security in production
-□ Unnecessary ports closed
-□ Development credentials NOT in production
+□ Unnecessary ports closed (e.g., MySQL 3306 blocked from public internet).
+□ Development credentials NOT in production.
 ```
 
 ### A06 — Vulnerable Components
 
 **Rules:**
-- Run `npm audit` (or equivalent) before each release
-- **Critical/High** vulnerabilities block the deploy
-- Renew dependencies each sprint (at least once)
-- Do not use `latest` versions without pinning in `package.json`; use exact versions or conservative ranges
+- Run dependency vulnerability checks (e.g., OWASP Dependency-Check for Maven/Gradle) before each release.
+- **Critical/High** vulnerabilities block the deploy.
+- Renew dependencies each sprint (at least once).
+- Do not use `latest` versions in dependencies; use exact versions.
 
 ### A07 — Identification and Authentication Failures
 
-- JWT with maximum expiration of **1 hour** for access tokens
-- Refresh tokens with expiration of **[7 days / 30 days]** and rotation on each use
-- Rate limiting on `/auth/login`: maximum [10] attempts per IP in 5 minutes
-- Account lockout after [5] consecutive failed attempts
+- Firebase JWT access tokens have a maximum expiration of **1 hour**.
+- Rate limiting on sensitive endpoints: maximum 10 attempts per IP in 5 minutes.
+- Account lockout after 5 consecutive failed login attempts (handled via Firebase settings).
 
 ### A08 — Software and Data Integrity Failures
 
-- Verify Docker image checksum before using in production
-- Third-party webhooks must verify cryptographic signature
-- Validate that messages from the broker (Kafka/RabbitMQ) have the expected schema
+- Verify Docker image checksums before using in production.
+- Third-party webhooks (e.g., payment gateways) must verify cryptographic signatures.
 
 ### A09 — Security Logging and Monitoring Failures
 
-- Every failed authentication must be logged with IP, timestamp, and user-agent
-- Log delete operations with who, when, and what was deleted
-- Security logs are retained for a minimum of **90 days**
+- Every failed authentication must be logged with IP, timestamp, and user-agent.
+- Log delete operations with who, when, and what was deleted (e.g., Workshop deleted by SuperAdmin).
+- Security logs are retained for a minimum of **90 days**.
 - Automatic alerts configured for:
-  - More than [50] 401/403 errors in 5 minutes
-  - Access to a resource from an unexpected country (if applicable)
+  - More than 50 HTTP 401/403 errors in 5 minutes.
 
 ### A10 — Server-Side Request Forgery (SSRF)
 
-- URLs constructed from user input MUST be validated against an allowlist of permitted domains
-- Do not fetch from private IPs (192.168.x.x, 10.x.x.x, 127.x.x.x) from the server
+- URLs constructed from user input MUST be validated against an allowlist of permitted domains.
+- Do not fetch from private IPs (192.168.x.x, 10.x.x.x, 127.x.x.x) from the server.
 
 ---
 
 ## User input handling
 
-```typescript
-// Example with Zod — always validate in the Controller/Adapter layer
-const CreateUserSchema = z.object({
-  email: z.string().email().max(255),
-  name: z.string().min(1).max(100).trim(),
-  role: z.enum(['ADMIN', 'USER', 'VIEWER']),
-});
+```java
+// Example with Jakarta Validation — always validate in the DTO layer
+public class CreateWorkshopRequest {
+    
+    @NotBlank
+    @Email
+    @Size(max = 255)
+    private String email;
 
-// The result is typed and sanitized
-const parsed = CreateUserSchema.parse(req.body);
+    @NotBlank
+    @Size(min = 1, max = 100)
+    private String workshopName;
+}
+// The controller will automatically reject invalid payloads with HTTP 400
 ```
 
-**Rule:** All external inputs (HTTP body, query params, path params, broker messages)
-pass through a validation schema before reaching the domain.
+**Rule:** All external inputs pass through a validation schema before reaching the domain logic.
 
 ---
 
 ## Secure error handling
 
-```typescript
-// ❌ BAD — exposes internal details
-res.status(500).json({ error: error.message, stack: error.stack });
+```java
+// ❌ BAD — exposes internal details (Stack Trace)
+return ResponseEntity.status(500).body(new ErrorResponse(e.getMessage(), e.getStackTrace()));
 
 // ✅ GOOD — generic message + traceId for internal correlation
-res.status(500).json({
-  error: 'INTERNAL_SERVER_ERROR',
-  message: 'Internal server error',
-  traceId: req.headers['x-trace-id'],
-});
+return ResponseEntity.status(500).body(new ErrorResponse(
+    "INTERNAL_SERVER_ERROR", 
+    "An unexpected error occurred", 
+    MDC.get("traceId")
+));
 ```
 
 ---
@@ -147,6 +146,5 @@ res.status(500).json({
 ## Correlations
 
 - Security policy (management, access, vault) → `00-governance/security-policy.md`
-- System threat model → `05-architecture/security-threat-model.md`
 - Authentication and JWT → `07-api/authentication.md`
 - Observability and security logs → `13-operations/observability.md`
