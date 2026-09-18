@@ -1,55 +1,33 @@
-# HU-[SERVICE]-[NNN]: [Story Title]
+# User Stories — FIXGO
 
-> **ID convention:** `HU-[SERVICE_ABBREVIATION]-[NNN]`
-> Examples: HU-IAM-001, HU-SCHED-023, HU-REF-005
+> **What is this?** The formalization of user needs into User Stories (HU) following the MoSCoW prioritization method and Gherkin acceptance criteria format.
 
----
+## Why this section exists
 
-## Story
-
-**As** [user role — e.g.: instructor, coordinator, learner, administrator]
-**I want** [concrete action they want to perform]
-**So that** [benefit they receive / problem they solve]
+User stories translate high-level product needs and domain rules into concrete, testable requirements. They serve as the direct bridge between product definition and software architecture.
 
 ---
 
-## Acceptance criteria
+## User Stories Catalog
 
-> Format: "Given [context/initial state], when [user action], then [expected and verifiable result]"
+## HU-SERVICES-001: Request Emergency Assistance
+**As** a stranded vehicle driver
+**I want** to request immediate roadside assistance and share my GPS coordinates
+**So that** a nearby verified mechanic can locate and assist me quickly
 
-- [ ] **AC1:** Given that [context], when [action], then [result]
-- [ ] **AC2:** Given that [context], when [action], then [result]
-- [ ] **AC3:** [Error scenario] Given that [invalid context], when [action], then [expected error]
+### Acceptance criteria
+- [ ] **AC1:** Given that the driver is on the emergency screen, when they submit valid failure details and GPS coordinates, then a new `RepairOrder` is created in PENDING status.
+- [ ] **AC2:** Given that the driver attempts to submit a request, when the issue description is less than 10 characters long, then the system rejects the request and displays a validation error.
+- [ ] **AC3:** Given that the system receives a valid request, when the order is registered, then the `ServiceRequested` domain event is triggered.
 
----
+### Technical notes
+**Responsible service(s):** Services Context / Order Microservice
+**Endpoint(s) implemented:** POST `/api/v1/repair-orders`
+**Events generated:** `ServiceRequested`
+**Required permissions:** Authenticated Client Role
 
-## Technical notes
-
-> [Implementation constraints, performance considerations, required integrations]
-
-**Responsible service(s):** [microservice name]
-**Endpoint(s) implemented:** [method + path]
-**Events generated:** [if applicable]
-**Required permissions:** [minimum role to perform this action]
-
----
-
-## Definition of Done (DoD)
-
-> This HU can only be closed when it meets the team's full DoD.
-> See: [`00-governance/definition-of-done.md`](../../00-governance/definition-of-done.md)
-
-**Additional checks specific to this HU (if applicable):**
-- [ ] [Additional check not covered by the general DoD — e.g.: DB migration executed in staging]
-- [ ] [Remove this section if there are no additional checks]
-
----
-
-## Estimation and priority
-
-| Field | Value |
-|-------|-------|
-| Story Points | [1 / 2 / 3 / 5 / 8 / 13] |
-| Priority | High / Medium / Low |
-| Target sprint | Sprint N |
-| Dependencies | [HU-XXX-NNN that must be completed first] |
+**Estimation and priority:**
+- **Story Points:** 5
+- **Priority:** High
+- **Target sprint:** Sprint 1
+- **Dependencies:** none

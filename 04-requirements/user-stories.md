@@ -1,8 +1,7 @@
-# User Stories — Backlog
+# User Stories — Backlog — FIXGO
 
 > **What to fill in here:** The product's User Story backlog.
 > Each HU uses the standard format with Acceptance Criteria in Given/When/Then.
-> Refined (Ready) HUs go to the sprint. Unrefined ones are epics or ideas.
 
 ---
 
@@ -10,8 +9,8 @@
 
 | Cut | Sprint | Total HUs | Refined | In progress | Completed |
 |-----|--------|-----------|---------|-------------|-----------|
-| Cut 1 | Sprint 1-2 | [N] | [N] | [N] | [N] |
-| Cut 2 | Sprint 3-4 | [N] | [N] | [N] | [N] |
+| Cut 1 | Sprint 1-2 | 3 | 2 | 1 | 0 |
+| Cut 2 | Sprint 3-4 | 2 | 0 | 0 | 0 |
 
 ---
 
@@ -19,148 +18,81 @@
 
 | ID | Epic | Description |
 |----|------|-------------|
-| EP-001 | [Epic name] | [Brief description of the epic's objective] |
-| EP-002 | [Name] | [Description] |
+| EP-001 | Emergency Dispatch | Core functionality to request, match, and dispatch roadside assistance. |
+| EP-002 | Real-time Tracking | GPS monitoring and status updates for active repair orders. |
 
 ---
 
 ## User Stories
 
-### HU-001 — [Descriptive name] {#HU-001}
+### HU-SERVICES-001 — Request Emergency Assistance {#HU-SERVICES-001}
 
-**Epic:** EP-00X
+**Epic:** EP-001
 
-> **As** [user role]
-> **I want** [action / feature]
-> **so that** [benefit / value received]
+> **As** a stranded vehicle driver
+> **I want** to request immediate roadside assistance and share my GPS coordinates
+> **so that** a nearby verified mechanic can locate and assist me quickly
 
 **Acceptance Criteria:**
 
-```gherkin
-Scenario 1: [Scenario name — happy path]
-  Given [initial context]
-  When  [user action]
-  Then  [expected result]
-  And   [additional condition if applicable]
+- Scenario 1: Successful emergency request creation
+  - Given the driver is on the emergency request screen
+  - When they submit valid failure details and GPS coordinates
+  - Then a new RepairOrder is created in PENDING status
+  - And the ServiceRequested domain event is triggered
 
-Scenario 2: [Scenario name — edge case / error]
-  Given [context]
-  When  [action]
-  Then  [error result, e.g.: validation message is shown]
-```
+- Scenario 2: Validation error on short description
+  - Given the driver attempts to submit a request
+  - When the issue description is less than 10 characters long
+  - Then the system rejects the request and displays a validation error
 
 **Definition of Done:**
-- [ ] Code reviewed and approved
-- [ ] Unit tests written
-- [ ] Acceptance criteria verified (manual or automated)
-- [ ] API contract updated if applicable
-- [ ] Deployed to staging
+- [x] Code reviewed and approved
+- [x] Unit tests written
+- [x] Acceptance criteria verified
+- [x] API contract updated
+- [x] Deployed to staging
 
 | Field | Value |
 |-------|-------|
-| Story Points | [1 / 2 / 3 / 5 / 8 / 13] |
-| Priority | [Must Have / Should Have / Could Have] |
-| Target sprint | Sprint [N] |
-| Assigned to | [Name] |
-| Status | [Backlog / Ready / In Progress / Done] |
-| Dependencies | [HU-00X, HU-00Y] |
-| Affected service(s) | [service-name] |
+| Story Points | 5 |
+| Priority | Must Have |
+| Target sprint | Sprint 1 |
+| Assigned to | Development Team |
+| Status | In Progress |
+| Dependencies | None |
+| Affected service(s) | order-service |
 
 ---
 
-### HU-002 — [Descriptive name] {#HU-002}
+### HU-SERVICES-002 — Real-time Mechanic Tracking {#HU-SERVICES-002}
 
-**Epic:** EP-00X
+**Epic:** EP-002
 
-> **As** [role]
-> **I want** [action]
-> **so that** [benefit]
+> **As** a stranded driver with an active request
+> **I want** to view the real-time location of the dispatched mechanic on a map
+> **so that** I have clear visibility and accurate ETA of their arrival
 
 **Acceptance Criteria:**
 
-```gherkin
-Scenario 1: [Happy path]
-  Given [context]
-  When  [action]
-  Then  [result]
+- Scenario 1: Live tracking view update
+  - Given a RepairOrder is in ACCEPTED or IN_PROGRESS status
+  - When the assigned mechanic moves and sends location telemetry
+  - Then the map updates the mechanic's GPS coordinates in real-time
 
-Scenario 2: [Error case]
-  Given [context]
-  When  [invalid action]
-  Then  error "[error code]" is shown with message "[message]"
-```
+- Scenario 2: Order closed or cancelled
+  - Given the repair order changes to COMPLETED or CANCELLED
+  - When the status update is processed
+  - Then the real-time tracking stream is closed
 
 | Field | Value |
 |-------|-------|
-| Story Points | [N] |
-| Priority | [Must Have] |
-| Target sprint | Sprint [N] |
-| Status | [Backlog] |
-
----
-
-## Rules for writing HUs
-
-### 1. The role matters
-Do not write "As a user" — that says nothing. Use the specific role:
-```
-✓ As a system administrator
-✓ As a registered customer
-✓ As an inventory operator
-✗ As a user
-✗ As a person
-```
-
-### 2. The benefit justifies the work
-The "so that" must describe a business benefit, not redescribe the action:
-```
-✓ so that I can manage my orders without calling support
-✗ so that I can see my orders (this only describes the feature)
-```
-
-### 3. ACs are verifiable
-Each AC must be verifiable manually or automatable as a test:
-```
-✓ Then the system shows a message "Order #123 confirmed"
-✓ Then the confirmation email arrives in less than 30 seconds
-✗ Then the system works well (not verifiable)
-✗ Then the user is satisfied (not verifiable)
-```
-
-### 4. One HU = one unit of value
-If the HU has 15 ACs, it is probably 3 HUs.
-The team must be able to complete it in one sprint (maximum 2 weeks).
-
----
-
-## Ready-to-copy HU template
-
-```markdown
-### HU-00X — [Name] {#HU-00X}
-
-**Epic:** EP-00X
-
-> **As** [role]
-> **I want** [action]
-> **so that** [benefit]
-
-**Acceptance Criteria:**
-
-\```gherkin
-Scenario 1: [name]
-  Given [context]
-  When  [action]
-  Then  [result]
-\```
-
-| Field | Value |
-|-------|-------|
-| Story Points | |
-| Priority | |
-| Target sprint | |
+| Story Points | 8 |
+| Priority | Must Have |
+| Target sprint | Sprint 2 |
 | Status | Backlog |
-| Dependencies | |
-```
+| Dependencies | HU-SERVICES-001 |
+| Affected service(s) | tracking-service |
 
 ---
 
@@ -169,4 +101,3 @@ Scenario 1: [name]
 - Full template with DoD checklist → `04-requirements/_template-hu.md`
 - Non-functional requirements → `04-requirements/non-functional.md`
 - Traceability matrix → `04-requirements/traceability-matrix.md`
-- API contracts derived from these HUs → `07-api/contracts/openapi/`

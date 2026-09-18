@@ -1,11 +1,11 @@
-# 03 — Product Definition
+# 03 — Product Definition — FIXGO
 
 > **What is this?** The answer to "what are we going to build?". It is not "how" — that comes in
-> architecture. Here the validated problem, product vision, and build plan are defined.
+> architecture. Here the validated problem, product vision, and build plan are defined for FIXGO.
 
 ## Why this section exists
 
-Without a clear product definition:
+Without a clear product definition for FIXGO:
 - The team builds features nobody asked for
 - Scope grows out of control (scope creep)
 - There is no way to know whether the project was successful
@@ -18,80 +18,55 @@ This section is the contract between the team and stakeholders about **what will
 
 ### `problem-framing.md` ⭐ (Start here)
 Articulates the problem before proposing solutions.
-**Fill in:** who has the problem, exactly what pain, evidence of the problem, how they solve it today.
+**Filled in:** vehicle owners stranded on highways or urban roads facing sudden mechanical breakdowns.
 
 **Format:**
-```markdown
+
 ## The problem
-**Who has it?** [Profile of the affected user]
-**What problem do they have?** [Description of the pain, specific]
-**When does it occur?** [Situation that triggers the problem]
-**What is the impact?** [Concrete consequence: time, money, frustration]
-**How do they solve it today?** [Current workaround and why it is insufficient]
+**Who has it?** Vehicle owners and stranded drivers in Colombia
+**What problem do they have?** Finding reliable, immediate roadside assistance and transparent pricing
+**When does it occur?** During sudden mechanical breakdowns far from a trusted workshop
+**What is the impact?** Hours of stranded exposure, overpaid emergency rates, and severe stress
+**How do they solve it today?** Yellow pages, phone directories, and informal WhatsApp recommendations
 
 ## Why it is worth solving
-[Justification for the value of building this system]
-```
-
-### `discovery-brief.md`
-Findings from user research.
-**Fill in:** interviews conducted, insights found, assumptions validated and invalidated.
+To eliminate the anxiety, high cost, and unpredictability of roadside emergencies through instant digital matching.
 
 ### `vision.md` ⭐
 The product's north star in 1-2 sentences.
-**Fill in:** format "For [user], who [need], [system name] is a [product type]
-that [key benefit]. Unlike [alternative], our product [differentiator]."
+**Filled in:** For vehicle owners and stranded drivers in Colombia who experience unexpected mechanical breakdowns, the FIXGO platform is a roadside mechanical assistance system that connects drivers with verified nearby mechanics through real-time GPS tracking and transparent pricing.
 
 ### `roadmap.md`
-Delivery plan over time.
-**Fill in:** milestones per quarter/sprint, which features go into each phase.
+Delivery plan over time for FIXGO.
+**Filled in:** 
 
-**Format:**
-```markdown
-## Phase 1 — MVP (Sprint 1-3)
-- [Critical feature 1]
-- [Critical feature 2]
+## Phase 1 — MVP (Q1 2026)
+- Repair order creation
+- GPS tracking of mechanics
+- Basic user and driver profiles
 
-## Phase 2 — Iteration (Sprint 4-6)
-- [Improvements based on feedback]
-```
-
-### `product-backlog.md` ⭐
-Prioritized list of everything that must be built.
-**Fill in:** using the `_template-backlog.md` template. Order by user value.
-
-### `_template-prd.md`
-Complete Product Requirements Document.
-**Use when:** you need to formalize requirements for an external stakeholder or academic delivery.
-
-### `_template-discovery-brief.md`
-Template for documenting user research.
-
-### `_template-problem-framing.md`
-Structured template for framing the problem.
-
-### `_template-backlog.md`
-Template for initial backlog user stories.
+## Phase 2 — Iteration (Q2 2026)
+- Push notifications
+- Integrated chat system
+- Automated mechanic matching
 
 ---
 
 ## User Story format
 
-```markdown
-## HU-[SERVICE]-[NNN]: [Title]
-**As** [user role]
-**I want** [action they want to perform]
-**So that** [benefit they receive]
+## HU-SERVICES-001: Request Emergency Assistance
+**As** a stranded vehicle driver
+**I want** to request immediate roadside assistance and share my GPS coordinates
+**So that** a nearby verified mechanic can locate and assist me quickly
 
 ### Acceptance criteria
-- [ ] AC1: Given [context], when [action], then [expected result]
-- [ ] AC2: ...
+- [ ] AC1: Given the user is on the request screen, when they submit failure details and location, then a new `RepairOrder` is created in PENDING status.
+- [ ] AC2: System validates that the issue description is at least 10 characters long.
 
 ### Technical notes
-[Constraints or implementation considerations]
+Uses Firebase Authentication for user identity and MySQL for storing repair order state.
 
-**Estimation:** [SP]  **Priority:** [High/Medium/Low]
-```
+**Estimation:** 5 SP  **Priority:** High
 
 ---
 
@@ -100,14 +75,14 @@ Template for initial backlog user stories.
 | This section feeds... | Why |
 |-----------------------|-----|
 | `04-requirements/` | Backlog HUs are formalized as requirements |
-| `02-domain/` | Problem framing reveals domain entities |
+| `02-domain/` | Problem framing reveals domain entities like `RepairOrder` and `Vehicle` |
 | `15-project-control/technical-backlog.md` | Technical debt identified during definition |
 
 ---
 
 ## Questions this section must answer
 
-- What problem exactly are we solving?
-- What does product success look like?
-- What do we build first and why?
-- What do we NOT build in this cycle?
+- What problem exactly are we solving? (Sudden mechanical breakdowns without reliable real-time dispatch)
+- What does product success look like? (Response times under 30 minutes and 4.8-star satisfaction rating)
+- What do we build first and why? (MVP core request flow and GPS tracking)
+- What do we NOT build in this cycle? (Full vehicle insurance policy sales and heavy commercial fleet maintenance)

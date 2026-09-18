@@ -1,4 +1,4 @@
-# System Architecture Overview
+# System Architecture Overview — FIXGO
 
 > **What to fill in here:** The architectural view is the technical snapshot of the system.
 > It includes the C4 system and container diagram, service list, and architectural principles.
@@ -8,11 +8,11 @@
 
 ## 1. Adopted architectural style
 
-**Style:** [Microservices / Microservices + Event-Driven / Modular Monolith / etc.]
+**Style:** Microservices + Event-Driven Architecture with Hexagonal Architecture (Ports & Adapters) per service.
 
-**Justification:** [Why this style for this project and these requirements]
+**Justification:** FIXGO requires high scalability, fault isolation, and real-time responsiveness for emergency vehicle dispatch and GPS telemetry tracking. Decoupling services via asynchronous domain events and maintaining independent databases ensures fault tolerance and independent deployments.
 
-**Reference ADR:** [`ADR-001-architectural-style.md`](decisions/records/)
+**Reference ADR:** `ADR-001-architectural-style.md`
 
 ---
 
@@ -22,16 +22,16 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                        System [Name]                                │
-│                                                                     │
-│  ┌─────────────┐    ┌─────────────┐    ┌────────────────────────┐  │
-│  │ [Service A] │    │ [Service B] │    │ [Service C]            │  │
-│  │             │    │             │    │                        │  │
-│  │ Port: 3001  │    │ Port: 3002  │    │ Port: 3003             │  │
-│  └──────┬──────┘    └──────┬──────┘    └──────────┬─────────────┘  │
+│                        System FIXGO                                 │
+│                                                                     │ 
+│  ┌─────────────┐    ┌─────────────┐    ┌────────────────────────┐   │
+│  │  Order Svc  │    │Tracking Svc │    │ Notification Svc       │   │
+│  │             │    │             │    │                        │   │
+│  │ Port: 3001  │    │ Port: 3002  │    │ Port: 3003             │   │
+│  └──────┬──────┘    └──────┬──────┘    └──────────┬─────────────┘   │
 │         │                  │                       │                │
 │         └──────────────────┴───────────────────────┘                │
-│                            │ Message Bus                             │
+│                            │ Message Bus(RabbitMQ)                  │
 └────────────────────────────│────────────────────────────────────────┘
                              │
                   ┌──────────┴──────────┐
@@ -42,7 +42,7 @@
          └────────┬──────┘    └─────────────────┘
                   │
          ┌────────▼──────────────┐
-         │    External clients   │
+         │   External clients    │
          │  (Web, Mobile, API)   │
          └───────────────────────┘
 ```
@@ -53,36 +53,26 @@
 
 > Shows the processes, databases, and main communication channels.
 
-```
-Replace this block with the project-specific diagram.
-
-Recommended tools:
-- PlantUML (see 08-uml/diagrams/source/)
-- Mermaid (natively supported on GitHub)
-- draw.io / Lucidchart
-```
-
-**Mermaid example:**
-
 ```mermaid
 graph TB
-  subgraph "System [Name]"
+  subgraph "System FIXGO"
     GW[API Gateway<br/>:8080]
-    SA[Service A<br/>:3001]
-    SB[Service B<br/>:3002]
-    BUS[(Message Bus<br/>Kafka/RabbitMQ)]
-    DBA[(Service A DB<br/>PostgreSQL)]
-    DBB[(Service B DB<br/>MongoDB)]
+    OS[Order Service<br/>:3001]
+    TS[Tracking Service<br/>:3002]
+    NS[Notification Service<br/>:3003]
+    BUS[(Message Bus<br/>RabbitMQ)]
+    DBA[(Order DB<br/>MySQL)]
+    DBB[(Tracking DB<br/>PostgreSQL)]
   end
 
   WEB[Web App] --> GW
   MOB[Mobile] --> GW
-  GW --> SA
-  GW --> SB
-  SA --> DBA
-  SB --> DBB
-  SA --> BUS
-  BUS --> SB
+  GW --> OS
+  GW --> TS
+  OS --> DBA
+  TS --> DBB
+  OS --> BUS
+  BUS --> NS
 ```
 
 ---
