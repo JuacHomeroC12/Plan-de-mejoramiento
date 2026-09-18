@@ -75,7 +75,6 @@ High-throughput temporary storage for live WebSocket streaming while a mechanic 
 - **Telemetry Data:** High-frequency Redis points expire automatically. Persistent tracking logs in PostgreSQL are aggregated daily and purged after 30 days.
 
 ---
-
 ## Key Correlations
 
 - Architecture overview → `05-architecture/overview.md`
