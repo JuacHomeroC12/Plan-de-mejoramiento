@@ -1,16 +1,8 @@
-# Design Patterns and Microservices Guide
+# Design Patterns and Microservices Guide — FIXGO
 
 > This document is the project's pattern catalog.
 > For each pattern: when to use it, when NOT to, and an implementation example.
 > Patterns are not recipes — they are tools. Use them when the problem requires it.
-
-> **Stack note:** Descriptions and diagrams are technology-agnostic.
-> Illustrative code snippets use pseudo-TypeScript as a reference language
-> for its proximity to pseudocode syntax. To see the concrete implementation in your stack:
-> [`_stacks/node-typescript.md`](../_stacks/node-typescript.md) ·
-> [`_stacks/java-spring.md`](../_stacks/java-spring.md) ·
-> [`_stacks/python-fastapi.md`](../_stacks/python-fastapi.md) ·
-> [`_stacks/go.md`](../_stacks/go.md)
 
 ---
 
@@ -44,16 +36,10 @@
 
 ```typescript
 // Factory Method — inside the Aggregate Root
-class Order {
-  // Instead of new Order(...), we use a factory method
-  static create(customerId: CustomerId, items: OrderItem[]): Order {
-    if (items.length === 0) throw new DomainException('INV-001');
-    return new Order(OrderId.new(), customerId, items, OrderStatus.PENDING);
-  }
-
-  static reconstitute(data: OrderData): Order {
-    // To reconstruct from the database
-    return new Order(new OrderId(data.id), new CustomerId(data.customerId), ...);
+class RepairOrder {
+  static create(driverId: DriverId, details: FailureDetails, coordinates: Coordinates): RepairOrder {
+    if (details.length < 10) throw new DomainException('INV-002');
+    return new RepairOrder(RepairOrderId.new(), driverId, details, coordinates, OrderStatus.PENDING);
   }
 }
 ```
@@ -68,12 +54,11 @@ class Order {
 
 ```typescript
 // Builder — especially useful for tests
-const order = new OrderBuilder()
-  .withCustomer('customer-id-123')
-  .withItem(product1, quantity: 2)
-  .withItem(product2, quantity: 1)
-  .withAddress('5th Street #10-20, Neiva')
-  .inStatus(OrderStatus.CONFIRMED)
+const order = new RepairOrderBuilder()
+  .withDriver('driver-id-123')
+  .withDetails('Flat tire on the front right')
+  .withCoordinates({ lat: 2.9273, lng: -75.2818 })
+  .inStatus(OrderStatus.ACCEPTED)
   .build();
 ```
 
@@ -88,8 +73,7 @@ const order = new OrderBuilder()
 **WARNING:** Singleton makes testing difficult. Prefer dependency injection.
 
 ```typescript
-// ✓ Better: Singleton managed by the DI container, not by the class itself
-// In the container (NestJS, tsyringe, etc.):
+// ✓ Better: Singleton managed by the DI container
 container.registerSingleton(DatabaseConnection, DatabaseConnectionImpl);
 ```
 
@@ -103,23 +87,16 @@ container.registerSingleton(DatabaseConnection, DatabaseConnectionImpl);
 
 ```typescript
 // The domain defines the interface it needs
-interface PaymentGatewayPort {
-  charge(amount: Money, card: TokenData): Promise<ChargeResult>;
+interface GeolocationPort {
+  calculateETA(origin: Coordinates, destination: Coordinates): Promise<ETA>;
 }
 
 // The adapter translates to the external API
-class StripePaymentAdapter implements PaymentGatewayPort {
-  constructor(private stripe: Stripe) {}
-
-  async charge(amount: Money, card: TokenData): Promise<ChargeResult> {
-    // Translate domain model → Stripe model
-    const charge = await this.stripe.charges.create({
-      amount: amount.toCents(),
-      currency: amount.currency,
-      source: card.token,
-    });
-    // Translate Stripe result → domain model
-    return new ChargeResult(charge.id, charge.status === 'succeeded');
+class GoogleMapsAdapter implements GeolocationPort {
+  async calculateETA(origin: Coordinates, destination: Coordinates): Promise<ETA> {
+    // Translate domain model → Google Maps model
+    const response = await this.gmaps.distanceMatrix({ ... });
+    return new ETA(response.duration);
   }
 }
 ```
@@ -134,19 +111,19 @@ class StripePaymentAdapter implements PaymentGatewayPort {
 
 ```typescript
 // Cache decorator around the repository
-class CachedOrderRepository implements OrderRepositoryPort {
+class CachedTrackingRepository implements TrackingRepositoryPort {
   constructor(
-    private readonly repo: OrderRepositoryPort,
+    private readonly repo: TrackingRepositoryPort,
     private readonly cache: CachePort,
   ) {}
 
-  async findById(id: OrderId): Promise<Order | null> {
-    const cached = await this.cache.get(`order:${id.value}`);
-    if (cached) return OrderMapper.toDomain(cached);
+  async findActiveLocation(orderId: OrderId): Promise<Location null |> {
+    const cached = await this.cache.get(`location:${orderId.value}`);
+    if (cached) return LocationMapper.toDomain(cached);
 
-    const order = await this.repo.findById(id);
-    if (order) await this.cache.set(`order:${id.value}`, order, TTL_5_MINUTES);
-    return order;
+    const location = await this.repo.findActiveLocation(orderId);
+    if (location) await this.cache.set(`location:${orderId.value}`, location, TTL_1_MINUTE);
+    return location;
   }
 }
 ```
@@ -160,21 +137,16 @@ class CachedOrderRepository implements OrderRepositoryPort {
 **When to use it:** To publish domain events after persisting the aggregate.
 
 ```typescript
-// The Aggregate accumulates events — the UseCase publishes them
-class Order {
+class RepairOrder {
   private readonly _events: DomainEvent[] = [];
 
-  confirm(): void {
-    // ... business logic ...
-    this._events.push(new OrderConfirmed(this.id));
+  accept(mechanicId: MechanicId): void {
+    this.status = OrderStatus.ACCEPTED;
+    this._events.push(new OrderAccepted(this.id, mechanicId));
   }
 
   get domainEvents(): DomainEvent[] {
     return [...this._events];
-  }
-
-  clearEvents(): void {
-    this._events.length = 0;
   }
 }
 ```
