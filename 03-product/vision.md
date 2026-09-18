@@ -1,4 +1,4 @@
-# Product Vision
+# Product Vision — FIXGO
 
 > The vision is the team's north star. All sprints, design decisions,
 > and trade-offs are evaluated against this vision.
@@ -8,34 +8,29 @@
 
 ## Vision statement
 
-> Use the Geoffrey Moore template:
-
-**For** [target customer]
-**who** [has the need / faces the problem]
-**the** [product name]
-**is a** [product category]
-**that** [main benefit / reason to choose]
-**unlike** [competing alternative]
-**our product** [key differentiator].
+**For** vehicle owners and stranded drivers in Colombia
+**who** experience unexpected mechanical breakdowns on highways and urban roads,
+**the** FIXGO platform
+**is a** roadside mechanical assistance and dispatch system
+**that** connects drivers with verified nearby mechanics through real-time GPS tracking and transparent pricing,
+**unlike** traditional, fragmented phone directories and unreliable informal towing services,
+**our product** offers immediate digital matching, guaranteed pricing transparency, and live tracking of the mechanic's arrival.
 
 ---
 
 ## Team mission
 
-> In 1-2 sentences: why does this team exist? What change in the world does it seek to achieve?
+The FIXGO development team exists to transform emergency roadside assistance into a fast, transparent, and trustworthy experience, eliminating the stress and uncertainty of unexpected vehicle breakdowns through reliable digital dispatch.
 
 ---
 
 ## Strategic pillars
 
-Pillars are the focus areas that take us from mission to vision.
-They should be few (3-5) and consistent over time.
-
 | Pillar | Description | Success metrics |
 |--------|-------------|----------------|
-| [Pillar 1: e.g. Speed] | [What it means for our product] | [KPIs] |
-| [Pillar 2: e.g. Reliability] | [Description] | [KPIs] |
-| [Pillar 3: e.g. Scale] | [Description] | [KPIs] |
+| Speed & Efficiency | Minimizing response and dispatch time through smart geographic matching. | Average response time under 30 minutes |
+| Trust & Transparency | Ensuring clear pricing, verified mechanics, and secure ratings. | Average rating above 4.5 stars and zero hidden fee complaints |
+| Accessibility & Scale | Providing lightweight, reliable access for users even under low-bandwidth highway conditions. | Platform uptime of 99.5% and successful order completion rate |
 
 ---
 
@@ -56,35 +51,31 @@ Q1 2024 ──── Q2 2024 ──── Q3 2024 ──── Q4 2024
 
 | Horizon | Period | Objective | Epics / Features | Uncertainty |
 |---------|--------|----------|----------------|-------------|
-| H1 (Now) | [Q1] | [Objective] | [Epic 1, Epic 2] | Low |
-| H2 (Next) | [Q2] | [Objective] | [Epic 3, Area X] | Medium |
-| H3 (Later) | [Q3-Q4] | [Objective] | [Area Y, Area Z] | High |
+| H1 (Now) | Q1 2026 | Launch MVP and validate core emergency request flow | Repair order creation, GPS tracking, basic user profiles | Low |
+| H2 (Next) | Q2 2026 | Expand mechanic network and notification systems | Push notifications, integrated chat, automated mechanic matching | Medium |
+| H3 (Later) | Q3-Q4 2026 | Scale operations and introduce advanced telemetry integration | Predictive maintenance alerts, multi-city deployment | High |
 
 ---
 
 ## Product principles
 
-These principles guide design and prioritization decisions when there are trade-offs.
+1. **User safety first:** Every design decision must prioritize the physical security and peace of mind of the stranded driver.
 
-1. **[Principle 1]:** [description. Example: "New user first — every new feature must be understandable in 2 minutes without onboarding"]
+2. **Radical transparency:** Pricing, mechanic credentials, and estimated arrival times must always be upfront and clear.
 
-2. **[Principle 2]:** [description. Example: "Opinionated about what matters, flexible on the secondary"]
-
-3. **[Principle 3]:** [description]
+3. **Simplicity under stress:** Core rescue actions must be executable with minimal friction, designed for users who are anxious or in high-stress situations.
 
 ---
 
 ## Product Definition of Done
 
-> The product is "done" when it achieves these OKRs:
-
-**Objective:** [What we want to achieve]
+**Objective:** Establish FIXGO as the leading reliable digital roadside assistance platform in the region.
 
 | Key Result | Baseline | Target | Date |
 |------------|---------|--------|------|
-| KR1: [specific metric] | [current value] | [target value] | [date] |
-| KR2: [metric] | [current] | [target] | [date] |
-| KR3: [business metric] | [current] | [target] | [date] |
+| KR1: Average emergency response time | 120 mins | 30 mins | End of Q2 2026 |
+| KR2: Successfully completed assistance requests | 40% | 85% | End of Q3 2026 |
+| KR3: User satisfaction rating | 3.5 stars | 4.8 stars | End of Q4 2026 |
 
 ---
 
