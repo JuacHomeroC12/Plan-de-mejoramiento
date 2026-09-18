@@ -43,8 +43,10 @@ No technical jargon — it must be understandable by someone from the business s
 
 ## Project contacts
 
-| Role | Name | Contact |
+| Role | Name | Contact / Info |
 |------|------|---------|
-| Tech Lead | [Name] | [email/Slack] |
-| Product Owner | [Name] | [email/Slack] |
-| DevOps | [Name] | [email/Slack] |
+| **Líder de Proyecto (Backend)** | Johan Andrés Liñan Esquivel | johan117herli@gmail.com |
+| **Desarrollador Frontend** | Juan David Romero Calderon | juanchoromerocalderon2022@gmail.com |
+| **Desarrollador / QA** | Gabriel Tijaro Jimenez | tijarojimenezgabriel@gmail.com |
+| **Diseñador UI/UX & Doc** | Mateo Esteban Ramirez Garzon | mateoestebanramirez7@gmail.com |
+| **Instructor (Evaluator)** | Jesús Ariel González Bonilla | SENA CIES |

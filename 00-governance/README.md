@@ -1,4 +1,4 @@
-# 00-governance — Team Rules
+# 00-governance — Team Rules for FIXGO
 
 > This section defines the agreements the team commits to follow throughout the project.
 > Every team member must read all documents in this section before making their first commit.
@@ -14,7 +14,7 @@
 | [definition-of-done.md](./definition-of-done.md) | Checklist that every completed user story must satisfy |
 | [definition-of-ready.md](./definition-of-ready.md) | Checklist for a user story to enter a sprint |
 | [documentation-rules.md](./documentation-rules.md) | How to write, update, and delete documentation |
-| [microservices-documentation.md](./microservices-documentation.md) | Required documents per microservice |
+| [microservices-documentation.md](./microservices-documentation.md) | Required documents per backend service and module |
 | [security-policy.md](./security-policy.md) | How the team handles vulnerabilities and security incidents |
 | [security-rules.md](./security-rules.md) | Code-level security rules: secrets, auth, input validation |
 
@@ -22,8 +22,8 @@
 
 ## How governance applies
 
-Governance rules apply to **the entire project** — all sections, all services, all team members.
-If a rule conflicts with a local convention, governance wins unless a new ADR overrides it.
+Governance rules apply to **the entire FIXGO project** — all sections, all services, and all team members.
+If a rule conflicts with a local convention, governance wins unless a new ADR (Architecture Decision Record) overrides it.
 
 > Change a governance rule only through team agreement.
-> Document the change and the reason. Announce it before the next sprint.
+> Document the change and the reason. Announce it before the next sprint planning.

@@ -1,8 +1,8 @@
-# Project Glossary
+# Project Glossary - FIXGO
 
 > **Instructions:** Define here all technical and business terms used in the project.
 > This is the official dictionary — if there is ambiguity, this document wins.
-> Add terms throughout the project, not only at the start.
+> Add terms throughout the project lifecycle, not only at the start.
 
 ---
 
@@ -10,16 +10,21 @@
 
 1. Before using a technical or business term in code, docs, or conversations: look it up here.
 2. If it's not there: add it with its definition.
-3. If there is disagreement about the definition: discuss it as a team and update this document.
+3. If there is disagreement about the definition: discuss it as a team and update this document under the Project Leader's guidance.
 
 ---
 
-## Domain terms
+## Domain terms (Mechanical Workshop)
 
 | Term | Definition | Notes / Synonyms |
 |------|-----------|-----------------|
-| [Term A] | [Precise definition in the context of this system] | [Synonyms or alternative uses to AVOID] |
-| [Term B] | [Definition] | |
+| Workshop (Taller) | The physical business entity providing automotive or mechanical repair services. | Do not use "Store" or "Shop". |
+| Client (Cliente) | The registered user who owns one or multiple vehicles and requests services. | Synonym: Vehicle Owner. |
+| Mechanic (Mecánico) | The employee assigned to perform diagnostic and repair tasks on a vehicle. | |
+| Vehicle (Vehículo) | The physical automobile or motorcycle registered in the system for servicing. | |
+| Repair Order (Orden de Reparación) | The official document and system record detailing the requested services, assigned mechanic, and current status. | Synonym: Service Order. |
+| Spare Part (Repuesto) | A physical inventory item required to complete a repair order. | |
+| Appointment (Cita) | A scheduled date and time for a client to bring their vehicle to the workshop. | |
 
 ---
 
@@ -27,14 +32,12 @@
 
 | Term | Definition |
 |------|-----------|
-| Microservice | Independent service with a single responsibility, its own process, and its own database |
-| Domain Event | A fact that occurred in the business that other services can observe. Name always in past tense. |
-| Bounded Context | Boundary within which a particular domain model has consistent meaning |
-| API Gateway | Single entry point to the system that routes requests to the corresponding microservices |
-| Circuit Breaker | Pattern that stops calls to a failing service, preventing failure cascades |
-| Saga | Sequence of local transactions across different services with compensating transactions on failure |
-| Dead Letter Queue | Queue where messages that could not be processed after several retries are sent |
-| Idempotence | Property of an operation to produce the same result if executed multiple times |
+| Backend | Server-side logic of FIXGO, developed in Java. |
+| Relational Database | Data storage system using structured tables. FIXGO uses MySQL. |
+| Identity Provider (IdP) | External service managing user credentials securely. FIXGO uses Firebase Auth. |
+| Microservice | Independent service with a single responsibility and its own process. |
+| API Gateway | Single entry point to the system that routes requests to the corresponding services. |
+| DTO (Data Transfer Object) | An object used to encapsulate data and send it from one subsystem of an application to another (common in Java/Spring). |
 
 ---
 
@@ -42,16 +45,15 @@
 
 | Acronym | Meaning |
 |---------|---------|
+| ADSO | Análisis y Desarrollo de Software |
+| SENA | Servicio Nacional de Aprendizaje |
 | IAM | Identity and Access Management |
 | JWT | JSON Web Token |
 | API | Application Programming Interface |
 | CRUD | Create, Read, Update, Delete |
-| DTO | Data Transfer Object |
 | FR | Functional Requirement |
 | NFR | Non-Functional Requirement |
-| SLO | Service Level Objective |
-| SLA | Service Level Agreement |
-| ADR | Architecture Decision Record |
 | PR | Pull Request |
 | DoD | Definition of Done |
-| CI/CD | Continuous Integration / Continuous Delivery |
+| DoR | Definition of Ready |
+| MVC | Model-View-Controller (Architecture Pattern) |

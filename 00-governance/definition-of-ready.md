@@ -1,4 +1,4 @@
-# Definition of Ready (DoR)
+# Definition of Ready (DoR) - FIXGO
 
 > A User Story is **Ready** when the entire team can start it in the next sprint
 > without needing to resolve fundamental questions mid-sprint.
@@ -11,42 +11,36 @@
 Before moving a User Story to "Ready for Sprint", verify:
 
 ### Clarity
-
 - [ ] The story is written in the format: **As [role], I want [action], so that [benefit]**
-- [ ] The role is specific (not "as a user" — "as an authenticated buyer")
-- [ ] The expected benefit is clear and verifiable
+- [ ] The role is specific (e.g., "As an authenticated Client" or "As an available Mechanic").
+- [ ] The expected benefit is clear and verifiable.
 
 ### Acceptance Criteria
-
-- [ ] There are at least 2 acceptance criteria written in **Given / When / Then** format
-- [ ] The criteria cover the happy path AND the main error cases
-- [ ] The criteria are testable (it is possible to write an automated test for each one)
-- [ ] There are no ambiguous criteria ("the response should be fast" is not valid)
+- [ ] There are at least 2 acceptance criteria written in the **Given / When / Then** (Gherkin) format.
+- [ ] The criteria cover the happy path AND the main error cases (e.g., GPS signal lost, Firebase connection error).
+- [ ] The criteria are testable by the QA developer.
+- [ ] There are no ambiguous criteria.
 
 ### Dependencies
-
-- [ ] All external dependencies (other services, APIs, data) are identified
-- [ ] Blocking dependencies are resolved OR a workaround is defined
-- [ ] If it depends on another story, that story is already Done or In Progress
+- [ ] All external dependencies (Google Maps API, Firebase Cloud Messaging, MySQL integrations) are identified.
+- [ ] Blocking dependencies are resolved OR a workaround is defined.
+- [ ] If it depends on another story, that story is already Done or In Progress.
 
 ### Estimation
-
-- [ ] The team has estimated the story (story points or t-shirt size)
-- [ ] There is agreement that the story fits in one sprint
-- [ ] If it's too large, it has been broken down into smaller stories
+- [ ] The team has estimated the story using Planning Poker.
+- [ ] There is agreement that the story fits in one 2-week sprint.
+- [ ] If it is estimated at 8 or 13 points, it has been broken down into smaller stories.
 
 ### Technical readiness
-
-- [ ] The necessary accesses and environments are available
-- [ ] The API contracts (OpenAPI) are defined if the story involves new endpoints
-- [ ] There is a definition of the data model if there are DB changes
-- [ ] The impact on other services is identified
+- [ ] The necessary accesses and Firebase/MySQL environments are available.
+- [ ] The API contracts are defined if the story involves new endpoints.
+- [ ] There is a definition of the data model in `06-data/models.md` if there are database changes.
+- [ ] The impact on other modules (e.g., matching algorithm) is identified.
 
 ### Non-functional requirements
-
-- [ ] Performance requirements are specified (if applicable)
-- [ ] Security requirements are considered (authentication, authorization, validations)
-- [ ] Observability requirements are included (logs, metrics, traces)
+- [ ] Performance and concurrency requirements are specified (e.g., response < 3 seconds).
+- [ ] Security requirements are considered (JWT tokens, role validation).
+- [ ] Error tracking and logging requirements are included.
 
 ---
 
@@ -54,12 +48,12 @@ Before moving a User Story to "Ready for Sprint", verify:
 
 | Problem | What to do |
 |---------|-----------|
-| Unclear requirements | Schedule a 30-min refinement session with the PO |
-| Missing acceptance criteria | PO adds criteria before the next sprint |
-| Unknown dependencies | Tech Lead reviews and documents dependencies |
-| Too large (> 8 SP) | Break it down into smaller stories |
-| No access to test environment | DevOps generates credentials before sprint |
-| Unclear API contract | Agree on contract (OpenAPI) before starting |
+| Unclear requirements | Schedule a short refinement session with the Project Leader. |
+| Missing acceptance criteria | Add criteria before the next sprint planning. |
+| Unknown dependencies | The team reviews and documents dependencies (e.g., Maps API quotas). |
+| Too large (> 8 SP) | Break it down into smaller, testable stories. |
+| No access to test environment | Generate credentials for Firebase/MySQL before the sprint. |
+| Unclear data strategy | Review the Data Ownership Matrix in the models document. |
 
 ---
 
@@ -76,5 +70,4 @@ Before moving a User Story to "Ready for Sprint", verify:
 ## Correlations
 
 - Full DoD → `00-governance/definition-of-done.md`
-- User Story template → `04-requirements/_template-hu.md`
-- User Stories backlog → `04-requirements/user-stories.md`
+- User Stories backlog → GitHub Projects Board
