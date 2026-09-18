@@ -1,6 +1,6 @@
-# Design System
+# Design System — FIXGO
 
-> The design system is the shared visual language between design and development.
+> The design system is the shared visual language between design and development for FIXGO.
 > It prevents inconsistencies, accelerates design, and reduces rework.
 > **Rule:** Before creating a new component, check here if it already exists.
 
@@ -13,31 +13,31 @@ Tokens are the design system's variables. Changing a token changes the entire sy
 ### Colors
 
 ```css
-/* Base palette */
---color-primary-50:  #[hex];   /* Lightest */
---color-primary-100: #[hex];
---color-primary-500: #[hex];   /* Default */
---color-primary-900: #[hex];   /* Darkest */
+/* Base palette for FIXGO */
+--color-primary-50:  #FFF3E0;   /* Lightest orange */
+--color-primary-100: #FFE0B2;
+--color-primary-500: #FF6D00;   /* Default brand orange (Assistance actions) */
+--color-primary-900: #E65100;   /* Darkest orange */
 
---color-secondary-500: #[hex];
---color-neutral-50:  #[hex];
---color-neutral-900: #[hex];
+--color-secondary-500: #1E1E1E; /* Dark mode surfaces / drivers & mechanics UI */
+--color-neutral-50:  #F9FAFB;
+--color-neutral-900: #111827;
 
 /* Semantic colors */
---color-success:  #[hex];      /* Green — success, confirmed */
---color-warning:  #[hex];      /* Yellow — caution, pending */
---color-error:    #[hex];      /* Red — error, cancelled */
---color-info:     #[hex];      /* Blue — neutral information */
+--color-success:  #388E3C;      /* Green — service confirmed, completed */
+--color-warning:  #F57C00;      /* Yellow/Orange — pending order, searching mechanic */
+--color-error:    #D32F2F;      /* Red — cancellation, payment error */
+--color-info:     #1976D2;      /* Blue — neutral tracking information */
 
 /* Text */
---color-text-primary:   #[hex];
---color-text-secondary: #[hex];
---color-text-disabled:  #[hex];
+--color-text-primary:   #111827;
+--color-text-secondary: #4B5563;
+--color-text-disabled:  #9CA3AF;
 
 /* Backgrounds */
---color-bg-page:    #[hex];
---color-bg-card:    #[hex];
---color-bg-overlay: rgba([r],[g],[b], 0.5);
+--color-bg-page:    #F3F4F6;
+--color-bg-card:    #FFFFFF;
+--color-bg-overlay: rgba(0,0,0,0.5);
 ```
 
 ### Typography
@@ -46,6 +46,11 @@ Tokens are the design system's variables. Changing a token changes the entire sy
 /* Families */
 --font-family-sans:  '[Font name], sans-serif';
 --font-family-mono:  '[Mono font name], monospace';
+
+/* Sizes (modular scale 1.25) */
+/* Families */
+--font-family-sans:  'Inter, sans-serif';
+--font-family-mono:  'JetBrains Mono, monospace';
 
 /* Sizes (modular scale 1.25) */
 --font-size-xs:   0.75rem;   /* 12px */

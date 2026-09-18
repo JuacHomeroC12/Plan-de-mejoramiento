@@ -1,8 +1,6 @@
-# Navigation Map
+# Navigation Map — FIXGO
 
-> Defines the screen structure of the system, how screens connect to each other, and what routes
-> exist. It is the reference when frontend and backend discuss what endpoints exist
-> or how to reach a feature.
+> Defines the screen structure of the FIXGO platform, how screens connect to each other, and what routes exist. It is the reference when frontend and backend discuss endpoints or features.
 
 ---
 
@@ -12,16 +10,17 @@
 > Use the `[method] /route` format for API endpoints where applicable.
 
 ```
-/                           → Home / landing page
+/                           → Home /landing page
 ├── /auth
 │   ├── /login              → Authentication form
-│   ├── /register           → New user registration
-│   └── /forgot-password    → Password recovery
+│   ├── /register-driver    → New driver registration
+│   └── /register-mechanic  → New mechanic registration
 │
-├── /dashboard              → Main panel (authenticated)
-│   ├── /overview           → Summary and key metrics
-│   └── /notifications      → Notification center
-│
+├── /driver                 → Driver panel (role: DRIVER)
+│   ├── /dashboard          → Active request status and history summary
+│   └── /request-assistance → Emergency breakdown request flow
+│   └── /profile            → Driver account profile
+│ 
 ├── /[resource-a]           → [Resource A] list
 │   ├── /new                → Creation form
 │   └── /:id
@@ -43,15 +42,14 @@
 ## Screen map
 
 | Screen | Route | Component | Minimum role | Backend service |
-|--------|-------|-----------|--------------|----------------|
+|---|---|---|---|---|
 | Home | `/` | `HomePage` | Public | — |
-| Login | `/auth/login` | `LoginPage` | Public | auth-service |
-| Register | `/auth/register` | `RegisterPage` | Public | auth-service |
-| Dashboard | `/dashboard` | `DashboardPage` | USER | [service] |
-| [Resource A] list | `/[resource-a]` | `[ResourceA]ListPage` | USER | [service] |
-| [Resource A] detail | `/[resource-a]/:id` | `[ResourceA]DetailPage` | USER | [service] |
-| Create [Resource A] | `/[resource-a]/new` | `[ResourceA]FormPage` | USER | [service] |
-| Admin panel | `/admin` | `AdminDashboard` | ADMIN | auth-service |
+| Login | `/auth/login` | `LoginPage` | Public | api-gateway / auth |
+| Driver Dashboard | `/driver/dashboard` | `DriverDashboardPage` | DRIVER | order-service |
+| Request Assistance | `/driver/request-assistance` | `RequestAssistancePage` | DRIVER | order-service |
+| Mechanic Dashboard | `/mechanic/dashboard` | `MechanicDashboardPage` | MECHANIC | order-service |
+| Active Service | `/mechanic/active-service` | `ActiveServicePage` | MECHANIC | tracking-service |
+| Admin Panel | `/admin` | `AdminDashboardPage` | ADMIN | api-gateway |
 
 ---
 
@@ -85,24 +83,24 @@ Login (/auth/login)
     └── Invalid credentials ► Login with error message (max. 5 attempts)
 ```
 
-**Related HUs:** HU-AUTH-001, HU-AUTH-002
+**Related HUs:** HU-ORDER-003, HU-TRACK-001
 
 ---
 
 ## Navigation rules
 
 | Rule | Description |
-|------|-------------|
-| Authentication | Routes under `/dashboard`, `/[resource]`, `/admin` redirect to `/auth/login` if no session |
-| Authorization | Routes under `/admin` redirect to `/dashboard` if the user does not have ADMIN role |
-| 404 | Undefined routes show the 404 screen with a link to dashboard |
-| Confirmation | Destructive actions (delete, cancel) show a confirmation dialog before executing |
+|---|---|
+| Authentication | Routes under `/driver`, `/mechanic`, and `/admin` automatically redirect to `/auth/login` if no valid session token exists |
+| Authorization | Accessing `/admin` as a DRIVER or MECHANIC redirects to their respective dashboard |
+| 404 | Undefined routes display a custom 404 error screen with a direct link back to the user's dashboard |
+| Confirmation | Destructive actions (such as canceling an active emergency request) require explicit confirmation via modal |
 
 ---
 
 ## Correlations
 
 - Design system (visual components) → `12-ux-ui/design-system.md`
-- Wireframes → `12-ux-ui/wireframes/` (if applicable)
+- Wireframes → `12-ux-ui/wireframes/`
 - Frontend API contracts → `07-api/contracts/openapi/`
 - Roles and permissions → `00-governance/security-policy.md`

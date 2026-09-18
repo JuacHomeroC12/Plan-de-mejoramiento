@@ -1,12 +1,10 @@
 # 12 — UX/UI
 
-> **What is this?** The user experience design: how the system looks, how it is navigated,
-> and how it behaves from the end user's perspective.
+> **What is this?** The user experience design: how the FIXGO system looks, how it is navigated, and how it behaves from the end user's perspective (Drivers, Mechanics, and Administrators).
 
 ## Why design comes before code
 
-Changing a wireframe takes 5 minutes. Changing the code takes hours.
-Changing the code in production with real users can cost days and reputation.
+Changing a wireframe or a Figma component takes 5 minutes. Changing the code takes hours. Changing the code in production with real users can cost days and reputation.
 
 **Design first → implement later.**
 
@@ -15,28 +13,33 @@ Changing the code in production with real users can cost days and reputation.
 ## What is here and how to fill it in
 
 ### `navigation-map.md` ⭐ (Start here)
-The map of all screens/pages and how they connect.
+The map of all screens/pages and how they connect in the FIXGO platform.
 **Fill in:** navigation tree, from which screen you reach which, what role can access what.
 
-**Format:**
+**Format example for FIXGO:**
 ```markdown
 ## Navigation map
 
 ### Public area (no authentication)
-- / (home)
+- / (Landing page)
   - /login
-  - /register
-  - /recover-password
+  - /register-driver
+  - /register-mechanic
 
-### Private area — Role: [Role 1]
+### Private area — Role: Driver
 - /dashboard
-  - /[module-1]
-    - /[module-1]/list
-    - /[module-1]/{id}/detail
+  - /request-assistance
+    - /request-assistance/map-selection
+    - /request-assistance/waiting-mechanic
+  - /order-history
   - /profile
 
-### Private area — Role: [Role 2]
-[...]
+### Private area — Role: Mechanic
+- /dashboard
+  - /available-orders
+  - /active-service
+    - /active-service/navigation
+  - /earnings
 
 ## Access matrix
 | Screen | [Role 1] | [Role 2] | [Admin] |
@@ -60,23 +63,23 @@ The project's design system: tokens, components, patterns.
 ### Colors
 | Token | Value | Use |
 |-------|-------|-----|
-| --color-primary | #1976D2 | Primary buttons, links |
-| --color-error | #D32F2F | Error messages |
-| --color-success | #388E3C | Confirmations |
+| --color-primary | #FF6D00 | Main actions (e.g., Request Assistance button) |
+| --color-secondary | #1E1E1E | Backgrounds, dark mode surfaces |
+| --color-error | #D32F2F | Cancellations, payment failures |
+| --color-success | #388E3C | Order completed, payment successful |
 
 ### Typography
 | Level | Size | Weight | Use |
 |-------|------|--------|-----|
-| H1 | 32px | 700 | Page titles |
-| Body | 16px | 400 | General text |
+| H1 | 32px | 700 | Main screen titles |
+| Body | 16px | 400 | General text, form labels |
 
 ## Components
-### Primary button
-[description, variants, when to use it]
+### Emergency Action Button
+Large, high-contrast button, always accessible at the bottom of the driver's screen.
 
-### Data table
-[columns, pagination, search, inline actions]
-```
+### Map View
+Integrated map component showing current location (driver) or route (mechanic), utilizing custom markers for vehicle types.
 
 ---
 
