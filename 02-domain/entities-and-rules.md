@@ -195,4 +195,4 @@ class MechanicMatchingService {
 | Aggregate Root `RepairOrder` | `src/domain/services/` | `RepairOrder.ts` |
 | Value Object `GPSCoordinates` | `src/domain/shared/` | `GPSCoordinates.ts` |
 | Domain Service `MechanicMatchingService` | `src/domain/services/services/` | `MechanicMatchingService.ts` |
-| Repository `RepairOrderRepository` | `src/domain/services/ports/` | `RepairOrderRepository.ts` |
+| Repository `RepairOrderRepository` | `src/domain/services/ports/` | `RepairOrderRepository.ts` |  
